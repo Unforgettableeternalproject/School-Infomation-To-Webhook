@@ -5,8 +5,12 @@ from time import localtime
 from time import sleep
 from bs4 import BeautifulSoup
 
-#while True:
-    date = strftime('%m/%d %H:%M', localtime())
+#Initialize
+gap = 3600
+prevM = ""
+date = strftime('%m/%d %H:%M', localtime())
+
+while True:
     #Chapter 1: Getting Basic Information
     response = requests.get(
         "https://news.nknu.edu.tw/nknu_News/")
@@ -30,10 +34,16 @@ from bs4 import BeautifulSoup
     #print(final_message)
 
     #Chapter 3: Send Into Oblivion
-    webhook = DiscordWebhook(url='https://discord.com/api/webhooks/1019106976409583707/dTM7dWoKUwljjDQKy7xptyk1EKZnVYeXbcEGr9hpUsmw9q_Y6LGegtJYBrQpqQnnTfhb', rate_limit_retry=True,
+    if(finalM != prevM):
+        webhook = DiscordWebhook(url='https://discord.com/api/webhooks/1019106976409583707/dTM7dWoKUwljjDQKy7xptyk1EKZnVYeXbcEGr9hpUsmw9q_Y6LGegtJYBrQpqQnnTfhb', rate_limit_retry=True,
                              content=finalM)
-    response = webhook.execute()
+        response = webhook.execute()
+        prevM = finalM
+    else:
+        print("沒有更新...")
+
+    print(f"目前時刻:{date}")
 
     #Chapter 4: And it repeats...
 
-#    sleep(gap)
+    sleep(gap)
