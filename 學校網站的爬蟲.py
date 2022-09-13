@@ -47,3 +47,4 @@ while True:
     #Chapter 4: And it repeats...
 
     sleep(gap)
+#Program by Bernie
