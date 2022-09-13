@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>學校網站的爬蟲</Name>
     <RootNamespace>學校網站的爬蟲</RootNamespace>
+    <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>

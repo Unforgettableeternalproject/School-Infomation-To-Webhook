@@ -30,7 +30,7 @@ while True:
     desc = re.sub("[up\<\>\/]", '', desc).split("strong")
 
     dec = ''.join(x for x in desc if not "href" in x and x != "/p")
-    finalM = f"最新公告! 公告處:{unit}\n?{title}\n\n網站連結:{website}\n\n公告預覽:\n{dec}"
+    finalM = f"最新公告! 公告處:{unit}\n->{title}\n\n網站連結:{website}\n\n公告預覽:\n{dec}"
     #print(final_message)
 
     #Chapter 3: Send Into Oblivion
