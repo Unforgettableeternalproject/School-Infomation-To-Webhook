@@ -9,8 +9,7 @@ from bs4 import BeautifulSoup
 date = strftime('%m/%d %H:%M', localtime())
 f = open('previous.txt', 'r', encoding='UTF-8')
 prevM = f.read()
-print(prevM)
-f.close
+#print(prevM)
 w = open('previous.txt', 'w', encoding='UTF-8')
 
 #Chapter 1: Getting Basic Information
@@ -40,11 +39,12 @@ if(finalM != prevM):
     webhook = DiscordWebhook(url='https://discord.com/api/webhooks/1019106976409583707/dTM7dWoKUwljjDQKy7xptyk1EKZnVYeXbcEGr9hpUsmw9q_Y6LGegtJYBrQpqQnnTfhb', rate_limit_retry=True,
                             content=finalM)
     response = webhook.execute()
-    w.write(finalM)
+    print("發現更新，已推播至DC伺服器!")
 else:
     print("沒有更新...")
 
-print(f"目前時刻:{date}")
+w.write(finalM)
+print(f"程式執行完畢，目前時刻:{date}")
 
 #Chapter 4: And it repeats...
 
