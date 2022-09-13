@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "學校網站的爬蟲", "學校網站的爬蟲.pyproj", "{0F9431C3-1BC7-4D52-B428-17D583337621}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F9431C3-1BC7-4D52-B428-17D583337621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F9431C3-1BC7-4D52-B428-17D583337621}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49D4B7B3-76F4-4C25-B791-0234F9D9B42E}
+	EndGlobalSection
+EndGlobal
