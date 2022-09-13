@@ -1,4 +1,5 @@
 ﻿import requests, re
+from discord_webhook import DiscordWebhook
 from bs4 import BeautifulSoup
 
 #Chapter 1: Getting Basic Information
@@ -20,14 +21,12 @@ desc = str(soup2.find_all('span')[5])[34:-15]
 desc = re.sub("[up\<\>\/]", '', desc).split("strong")
 
 dec = ''.join(x for x in desc if not "href" in x and x != "/p")
-final_message = f"最新公告! 公告處:{unit}\n{title}\n網站連結:{website}\n\n公告預覽(可能會有點奇怪):\n{dec}"
+finalM = f"最新公告! 公告處:{unit}\n☛{title}\n\n網站連結:{website}\n\n公告預覽:\n{dec}"
 #print(final_message)
 
 #Chapter 3: Send Into Oblivion
-evt = "info_updated"
-key = "bgSBNfTuWeTf0X1eoSCPMi"
-val = final_message
-url = (f'https://maker.ifttt.com/trigger/{evt}' + f'/with/key/{key}?value1=' + val)
-r = requests.get(url)
-print(r.text)
+webhook = DiscordWebhook(url='https://discord.com/api/webhooks/1019106976409583707/dTM7dWoKUwljjDQKy7xptyk1EKZnVYeXbcEGr9hpUsmw9q_Y6LGegtJYBrQpqQnnTfhb', rate_limit_retry=True,
+                         content=finalM)
+response = webhook.execute()
+
 #print("Website: " + website + '\n' + "Title: " + title)
