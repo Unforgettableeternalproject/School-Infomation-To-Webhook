@@ -36,7 +36,7 @@ finalM = f"最新公告! 公告處:{unit}\n->{title}\n\n網站連結:{website}\n
 
 #Chapter 3: Send Into Oblivion
 if(finalM != prevM):
-    webhook = DiscordWebhook(url='https://discord.com/api/webhooks/1019106976409583707/dTM7dWoKUwljjDQKy7xptyk1EKZnVYeXbcEGr9hpUsmw9q_Y6LGegtJYBrQpqQnnTfhb', rate_limit_retry=True,
+    webhook = DiscordWebhook(url='https://discordapp.com/api/webhooks/1019081282002632744/aOhQ3FBys64iqsO85c1n4yw8cwSgA5Kl7LWb4qR6jSG6Gk82O-h2djkVnNPDrXHOAi7z', rate_limit_retry=True,
                             content=finalM)
     response = webhook.execute()
     print("發現更新，已推播至DC伺服器!")
