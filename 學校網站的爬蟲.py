@@ -1,23 +1,33 @@
-import requests
+ï»¿import requests, re
 from bs4 import BeautifulSoup
+
+#Chapter 1: Getting Basic Information
 response = requests.get(
     "https://news.nknu.edu.tw/nknu_News/")
 soup = BeautifulSoup(response.text, "html.parser")
 result = soup.find_all("td", limit = 3)[1]
+unit = str(soup.find_all("td", limit = 3)[2])[29:-5]
 rlist = str(result).split('>')
 website = "https://news.nknu.edu.tw/nknu_News/" + rlist[1][9:-17]
 temp = website.split("amp;")
 website = ''.join(x for x in temp)
 title = rlist[2][:-3]
 
+#Chapter 2: Consolidate Them
+response2 = requests.get(f"{website}")
+soup2 = BeautifulSoup(response2.text, "html.parser")
+desc = str(soup2.find_all('span')[5])[34:-15]
+desc = re.sub("[up\<\>\/]", '', desc).split("strong")
+
+dec = ''.join(x for x in desc if not "href" in x and x != "/p")
+final_message = f"æœ€æ–°å…¬å‘Š! å…¬å‘Šè™•:{unit}\n{title}\nç¶²ç«™é€£çµ:{website}\n\nå…¬å‘Šé è¦½(å¯èƒ½æœƒæœ‰é»å¥‡æ€ª):\n{dec}"
+#print(final_message)
+
+#Chapter 3: Send Into Oblivion
 evt = "info_updated"
 key = "bgSBNfTuWeTf0X1eoSCPMi"
-val = title
-url = (f'https://maker.ifttt.com/trigger/{evt}' + f'/with/key/{key}?value1={val}')
+val = final_message
+url = (f'https://maker.ifttt.com/trigger/{evt}' + f'/with/key/{key}?value1=' + val)
 r = requests.get(url)
 print(r.text)
-print("Website: " + website + '\n' + "Title: " + title)
-#¬ü¤Æ¿é¥XÀô¹Ò
-#¬[¤W¦øªA¾¹(heroku?)
-#¨C¤p®É¬d¸ß³Ì·s®ø®§¦³¨S¦³ÅÜ°Ê
-#¾ã¦X¶iDiscord Webhook
+#print("Website: " + website + '\n' + "Title: " + title)
