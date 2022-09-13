@@ -1,12 +1,13 @@
 ﻿import requests, re
 from discord_webhook import DiscordWebhook
+from datetime import datetime
 from time import strftime
 from time import localtime
-from time import sleep
 from bs4 import BeautifulSoup
 
 #Initialize
-date = strftime('%m/%d %H:%M', localtime())
+now = datetime.now()
+date = now.strftime('%m/%d %H:%M')
 f = open('previous.txt', 'r', encoding='UTF-8')
 prevM = f.read()
 #print(prevM)
