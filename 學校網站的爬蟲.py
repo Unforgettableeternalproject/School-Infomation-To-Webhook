@@ -1,50 +1,66 @@
-﻿import requests, re
+﻿from enum import Flag
+from bs4.element import TemplateString
+import requests, re
 from discord_webhook import DiscordWebhook
 from datetime import datetime
 from time import strftime
 from time import localtime
 from bs4 import BeautifulSoup
+#To optimize the texts
+def optimize(s):
+    flag = 0
+    ret = ""
+    for i in range(len(s)):
+        if(s[i] == '<'): flag = 0
+        if(flag): ret += s[i]
+        if(s[i] == '>'): flag = 1
+    return ret
+#To optimize the URL
+def get_website(s):
+    cot = 0
+    ret = ""
+    for i in range(len(s)):
+        if(cot == 4): break
+        if(cot == 3): ret += s[i]
+        if(s[i] == '"'): cot += 1
+    temp = ret.split("amp;")
+    ret = ''.join(x for x in temp)
+    return ret[:-1]
 
 #Initialize
 now = datetime.now()
-date = now.strftime('%m/%d %H:%M')
-f = open('previous.txt', 'r', encoding='UTF-8')
-prevM = f.read()
-#print(prevM)
-w = open('previous.txt', 'w', encoding='UTF-8')
+date = now.strftime('%Y.%m.%d')
+#date = '2022.09.16' Just for test
 
 #Chapter 1: Getting Basic Information
 response = requests.get(
     "https://news.nknu.edu.tw/nknu_News/")
 soup = BeautifulSoup(response.text, "html.parser")
-result = soup.find_all("td", limit = 3)[1]
-unit = str(soup.find_all("td", limit = 3)[2])[29:-5]
-rlist = str(result).split('>')
-website = "https://news.nknu.edu.tw/nknu_News/" + rlist[1][9:-17]
-temp = website.split("amp;")
-website = ''.join(x for x in temp)
-title = rlist[2][:-3]
+listing = soup.find_all("td", limit = 90) #Get the whole page
+info_ = [listing[x] for x in range(90) if x%6 == 1]
+unit_ = [listing[x] for x in range(90) if x%6 == 2]
+date_ = [listing[x] for x in range(90) if x%6 == 3]
+p_info = [str(info_[y]) for y in range(len(date_)) if date in str(date_[y])]
+p_unit = [optimize(str(unit_[y])) for y in range(len(date_)) if date in str(date_[y])]
+
+p_website = ["https://news.nknu.edu.tw/nknu_News/" + get_website(z) for z in p_info]
+p_title = [optimize(z) for z in p_info]
+
+no_update = True if not p_info else False
 
 #Chapter 2: Consolidate Them
-response2 = requests.get(f"{website}")
-soup2 = BeautifulSoup(response2.text, "html.parser")
-desc = str(soup2.find_all('span')[5])[34:-15]
-desc = re.sub("[up\<\>\/]", '', desc).split("strong")
-
-dec = ''.join(x for x in desc if not "href" in x and x != "/p")
-finalM = f"最新公告! 公告處:{unit}\n->{title}\n\n網站連結:{website}\n\n公告預覽:\n{dec}"
-#print(final_message)
+f_group = [f"{date} | 最新公告! 公告處:{p_unit[w]}\n\n➤  {p_title[w]}\n\n➤  網站連結: {p_website[w]}\n----------------------------------------\n" for w in range(len(p_info))]
 
 #Chapter 3: Send Into Oblivion
-if(title != prevM):
-    webhook = DiscordWebhook(url='https://discordapp.com/api/webhooks/1019106976409583707/dTM7dWoKUwljjDQKy7xptyk1EKZnVYeXbcEGr9hpUsmw9q_Y6LGegtJYBrQpqQnnTfhb', rate_limit_retry=True,
-                            content=finalM)
-    response = webhook.execute()
+if(not no_update):
+    for final in f_group:
+        #print(final) For debugging
+        webhook = DiscordWebhook(url='https://discordapp.com/api/webhooks/1019081282002632744/aOhQ3FBys64iqsO85c1n4yw8cwSgA5Kl7LWb4qR6jSG6Gk82O-h2djkVnNPDrXHOAi7z', rate_limit_retry=True,content=final)
+        response = webhook.execute()
     print("發現更新，已推播至DC伺服器!")
 else:
     print("沒有更新...")
 
-w.write(title)
 print(f"程式執行完畢，目前時刻:{date}")
 
 #Chapter 4: And it repeats...
